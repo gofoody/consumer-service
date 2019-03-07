@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/gofoody/common/generator"
 	"github.com/gofoody/consumer-service/pkg/model"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
@@ -71,7 +72,7 @@ func (c *consumerCtrl) Create(rw http.ResponseWriter, r *http.Request) {
 }
 
 func (c *consumerCtrl) init() {
-	c.nextID = IdGenerator()
+	c.nextID = generator.SeqID()
 	c.consumers = make(map[int]*model.Consumer)
 
 	consumer := &model.Consumer{
@@ -85,12 +86,4 @@ func (c *consumerCtrl) init() {
 		Name: "John",
 	}
 	c.consumers[consumer.ID] = consumer
-}
-
-func IdGenerator() func() int {
-	nextID := 0
-	return func() int {
-		nextID++
-		return nextID
-	}
 }
